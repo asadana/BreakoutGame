@@ -1,7 +1,8 @@
 package breakoutGame;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 public class Bricks {
 	public static final int BRICK_WIDTH = 60;
@@ -13,20 +14,12 @@ public class Bricks {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
-	public void draw(Graphics g){
-		g.setColor(Color.white);
-		g.fillRect(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT);
-		g.setColor(BRICK_COLOR);
-		g.fillRect((xPos+2), (yPos+2), BRICK_WIDTH-4, BRICK_HEIGHT-4);
-	}
 	
-	public boolean collision(Ball ball)
-	{
-		int ballX, ballY;
-		ballX = ball.getX();
-		ballY = ball.getY();
-		
-		return true;
+	public void draw(Graphics2D g){
+		g.setColor(Color.white);
+		g.fill(new Rectangle2D.Double(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT));
+		g.setColor(BRICK_COLOR);
+		g.fill(new Rectangle2D.Double((xPos+2), (yPos+2), BRICK_WIDTH-4, BRICK_HEIGHT-4));
 	}
 	
 	public int getX()
@@ -38,6 +31,5 @@ public class Bricks {
 	{
 		return this.yPos;
 	}
-	
 	
 }

@@ -3,6 +3,7 @@ package breakoutGame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -51,14 +52,15 @@ public class GameMain extends JPanel {
 	}
 		@Override public void paintComponent(Graphics g){
 			super.paintComponent(g);
+			Graphics2D graphic = (Graphics2D) g;
 			g.clearRect(0, 0, 800, 800);
 			g.setColor(Color.GRAY);
 			g.fillRect(0, 0, 800, 800);
-			myPaddle.draw(g);
-			ball.draw(g);
+			myPaddle.draw(graphic);
+			ball.draw(graphic);
 			for(ArrayList<Bricks> row : Brick){
 				for(Bricks b : row){
-					b.draw(g);
+					b.draw(graphic);
 				}
 			}
 			}	

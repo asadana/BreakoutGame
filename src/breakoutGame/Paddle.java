@@ -1,12 +1,14 @@
 package breakoutGame;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class Paddle extends JPanel implements KeyListener {
 	public static final int P_WIDTH = 150;
 	public static final int P_HEIGHT = 10;
@@ -38,11 +40,11 @@ public class Paddle extends JPanel implements KeyListener {
 		return xPos;
 	}
 	
-	public void draw(Graphics g){
+	public void draw(Graphics2D g){
         g.setColor(PADDLE_COLOR);
-        g.fillRect(xPos, yPos, P_WIDTH, P_HEIGHT);
+        g.fill(new Rectangle2D.Double(xPos, yPos, P_WIDTH, P_HEIGHT));
         g.setColor(Color.BLUE);
-        g.drawRect(xPos, yPos, P_WIDTH, P_HEIGHT);
+        g.draw(new Rectangle2D.Double(xPos, yPos, P_WIDTH, P_HEIGHT));
     }
 	
 	public int getX()
