@@ -52,6 +52,7 @@ public class Ball {
 		
 	}
 	
+	@SuppressWarnings("null")
 	public boolean collisionBrick(Bricks brick)
 	{
 		boolean check;

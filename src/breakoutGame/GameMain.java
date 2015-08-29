@@ -109,7 +109,7 @@ public static void main(String[] args) {
 		
 	clockFrame.setSize(300, 200);
 	clockFrame.setResizable(false);
-	// Intializing all labels
+	// Initializing all labels
 	clockLabel = new JLabel("0", JLabel.CENTER);
 	//Customizing the clock
 	clockLabel.setFont(new Font("Times New Roman", 1, 50));
