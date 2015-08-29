@@ -19,12 +19,13 @@ public class GameMain extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ArrayList<ArrayList<Bricks> > Brick;
+	ArrayList<ArrayList<Bricks>> Brick;
 	private int horizontalCount;
 	private Paddle myPaddle;
 	private Ball ball;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 720;
+	public static int numBrickRows = 2;
 	
 	public static Timer timerVar;
 	public static int timeLeft = 180;
@@ -32,14 +33,14 @@ public class GameMain extends JPanel {
 	public GameMain(){
 		myPaddle = new Paddle(400-(Paddle.P_WIDTH/2));;
 		ball = new Ball(((myPaddle.getXPos() + (Paddle.P_WIDTH / 2)) - (Ball.DIAMETER / 2)), 
-				(Paddle.Y_POS - (Ball.DIAMETER)));
+				(Paddle.yPos - (Ball.DIAMETER)));
 		
 		/*
 		 * Drawing bricks in the frame
 		 */
 		Brick = new ArrayList<ArrayList<Bricks> >();
 		horizontalCount = WIDTH / Bricks.BRICK_WIDTH;
-		for(int i = 0; i < 2; ++i){
+		for(int i = 0; i < numBrickRows; ++i){
 			ArrayList<Bricks> temp = new ArrayList<Bricks>();
 			for(int j = 1; j < horizontalCount; ++j){
 				Bricks tempBrickMain = new Bricks((j * Bricks.BRICK_WIDTH), ((i+1) * Bricks.BRICK_HEIGHT));

@@ -22,5 +22,26 @@ public class Ball {
 		g.setColor(Color.gray);
 		g.drawOval(xPos, yPos, DIAMETER, DIAMETER);
 	}
+	
+	public int getX()
+	{
+		return this.xPos;
+	}
+	
+	public int getY()
+	{
+		return this.yPos;
+	}
+	
+	public boolean collisionPaddle()
+	{
+		
+		return false;
+	}
+	
+	public boolean collisionBrick()
+	{
+		return false;
+	}
 }
 

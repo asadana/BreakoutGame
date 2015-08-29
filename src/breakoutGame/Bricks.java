@@ -19,4 +19,25 @@ public class Bricks {
 		g.setColor(BRICK_COLOR);
 		g.fillRect((xPos+2), (yPos+2), BRICK_WIDTH-4, BRICK_HEIGHT-4);
 	}
+	
+	public boolean collision(Ball ball)
+	{
+		int ballX, ballY;
+		ballX = ball.getX();
+		ballY = ball.getY();
+		
+		return true;
+	}
+	
+	public int getX()
+	{
+		return this.xPos;
+	}
+	
+	public int getY()
+	{
+		return this.yPos;
+	}
+	
+	
 }

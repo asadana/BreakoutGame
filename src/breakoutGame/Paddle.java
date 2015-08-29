@@ -8,11 +8,11 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 public class Paddle extends JPanel implements KeyListener {
-	public static final int Y_POS = GameMain.HEIGHT - 30;
 	public static final int P_WIDTH = 150;
 	public static final int P_HEIGHT = 10;
 	public static final Color PADDLE_COLOR = Color.black;
 	private int xPos;
+	public static int yPos = GameMain.HEIGHT - 30;
 	public static final int PADDLE_SPEED = 5;
 	
 	public Paddle(int xPos)
@@ -40,18 +40,28 @@ public class Paddle extends JPanel implements KeyListener {
 	
 	public void draw(Graphics g){
         g.setColor(PADDLE_COLOR);
-        g.fillRect(xPos, Y_POS, P_WIDTH, P_HEIGHT);
+        g.fillRect(xPos, yPos, P_WIDTH, P_HEIGHT);
         g.setColor(Color.BLUE);
-        g.drawRect(xPos, Y_POS, P_WIDTH, P_HEIGHT);
+        g.drawRect(xPos, yPos, P_WIDTH, P_HEIGHT);
     }
+	
+	public int getX()
+	{
+		return this.xPos;
+	}
+	
+	public int getY()
+	{
+		return Paddle.yPos;
+	}
 
 	@Override
 	public void keyPressed(KeyEvent k) {
-		if(k.getKeyCode()==k.VK_LEFT){
+		if(k.getKeyCode()==KeyEvent.VK_LEFT){
 			xPos = (xPos - 3);
 
 		}
-		else if(k.getKeyCode()==k.VK_RIGHT){
+		else if(k.getKeyCode()==KeyEvent.VK_RIGHT){
 			xPos = (xPos + 3);
 		}
 		// TODO Auto-generated method stub
