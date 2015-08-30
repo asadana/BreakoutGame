@@ -107,11 +107,7 @@ public class Ball {
 					System.out.println("hitLeft: "  + hitLeft(brickObj));
 					System.out.println("hitRight: "  + hitRight(brickObj));
 					
-					/*
-					Graphics2D g = null;
-					g.setColor(GameMain.bgColor);
-					g.fill(new Rectangle2D.Double(brickObj.brick.getX(), brickObj.brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT));
-					*/
+					
 					if(hitAbove(brickObj))
 						moveUp();
 					else if(hitBelow(brickObj))
@@ -120,6 +116,12 @@ public class Ball {
 						moveLeft();
 					else if(hitRight(brickObj))
 						moveRight();
+					
+					/*
+					Graphics2D g = null;
+					g.setColor(GameMain.bgColor);
+					g.fill(new Rectangle2D.Double(brickObj.brick.getX(), brickObj.brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT));
+					*/
 					
 					GameMain.Brick.remove(brickObj);
 					return true;
@@ -166,22 +168,22 @@ public class Ball {
 	
 	public boolean hitBelow(Bricks brickObj)
 	{
-		return ball.getY() >= brickObj.getY() + brickObj.brick.getHeight() ;
+		return xPos >= brickObj.getY() + Bricks.BRICK_HEIGHT ;
 	}
 	
 	public boolean hitAbove(Bricks brickObj) 
 	{
-		return ball.getY() + ball.getHeight() <= brickObj.brick.getY();
+		return yPos + ball.getHeight() <= brickObj.brick.getY();
 	}
 	
 	public boolean hitLeft(Bricks brickObj) 
 	{
-		return ball.getX() + ball.getWidth() <= brickObj.brick.getX();
+		return xPos + ball.getWidth() <= brickObj.brick.getX();
 	}
 	
 	public boolean hitRight(Bricks brickObj) 
 	{
-		return ball.getX() >= brickObj.brick.getX() + brickObj.brick.getWidth();
+		return xPos >= brickObj.brick.getX() + Bricks.BRICK_WIDTH;
 	}
 
 }
