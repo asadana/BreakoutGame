@@ -20,11 +20,12 @@ public class Bricks
 	public static final int BRICK_WIDTH = 60;
 	public static final int BRICK_HEIGHT = 20;
 	public static final Color BRICK_COLOR = Color.BLUE;
+	public static final int BRICK_GAP = 2;
 	
 	// Defining the position variables of the brick
 	private int xPos, yPos; 
 	
-	Rectangle2D.Double brick; 
+	public static Rectangle2D.Double brick; 
 
 	// Constructor method to set the position of the brick
 	public Bricks(int xPos, int yPos)
@@ -35,8 +36,9 @@ public class Bricks
 	}
 	
 	// Draw method draws and fills the position of the brick
-	public void draw(Graphics2D g){
-		g.setColor(Color.white);
+	public void draw(Graphics2D g)
+	{
+		g.setColor(GameMain.bgColor);
 		g.fill(brick);
 		g.setColor(BRICK_COLOR);
 		g.fill(new Rectangle2D.Double((xPos+2), (yPos+2), BRICK_WIDTH-4, BRICK_HEIGHT-4));
@@ -45,13 +47,13 @@ public class Bricks
 	// getX function returns the position of the brick on X-axis
 	public int getX()
 	{
-		return this.xPos;
+		return xPos;
 	}
 	
 	// getY function returns the position of the brick on Y-axis
 	public int getY()
 	{
-		return this.yPos;
+		return yPos;
 	}
 	
 }

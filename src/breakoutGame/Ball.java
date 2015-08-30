@@ -18,6 +18,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
+import java.util.ArrayList;
 
 public class Ball {
 
@@ -28,7 +29,7 @@ public class Ball {
 	
 	public static final Color BALL_COLOR = Color.black;
 	
-	private Ellipse2D.Double ball;
+	public static Ellipse2D.Double ball;
 	
 	// new position variables for x and y
 	private double newX = 1;
@@ -68,13 +69,18 @@ public class Ball {
 		return (int)ball.getWidth();
 	}
 	
+	public int getHeight()
+	{
+		return (int)ball.getHeight();
+	}
+	
 	/* collisionPaddle takes an object of the paddle and compares the area covered by the
 	 * paddle to the area covered by the ball and checks if they intersect
 	 */
-	public boolean collisionPaddle(Paddle paddle)
+	public boolean collisionPaddle(Paddle paddleObj)
 	{	
 		Area ballArea = new Area (ball);
-		ballArea.intersect(new Area(new Rectangle2D.Double(paddle.getX(), paddle.getY(), Paddle.P_WIDTH, Paddle.P_HEIGHT)));
+		ballArea.intersect(new Area(new Rectangle2D.Double(paddleObj.paddle.getX(), paddleObj.paddle.getY(), Paddle.P_WIDTH, Paddle.P_HEIGHT)));
 		return !ballArea.isEmpty();
 	}
 	
@@ -82,35 +88,57 @@ public class Ball {
 	 * brick and compares it to the area covered by the ball and checks if they intersect.
 	 */
 	@SuppressWarnings("null")
-	public boolean collisionBrick(Bricks brick)
+	public boolean collisionBrick()
 	{
-		boolean check;
-		
 		Area ballArea = new Area(ball);
-		check = ballArea.intersects(new Rectangle2D.Double(brick.getX(), brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT));
 		
-		if(check)
+		for(ArrayList<Bricks> tempList: GameMain.Brick)
 		{
-			Graphics2D g = null;
-			g.setColor(GameMain.bgColor);
-			g.fill(new Rectangle2D.Double(brick.getX(), brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT));
-			return true;
+			for(Bricks brickObj: tempList)
+			{
+				ballArea.intersect(new Area(new Rectangle2D.Double(brickObj.brick.getX(), brickObj.brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT)));
+		
+				if(!ballArea.isEmpty())
+				{
+					System.out.println("Brick Collision");
+					System.out.println("Ball : " + ball.getX() + ", " + ball.getY());
+					System.out.println("hitAbove: "  + hitAbove(brickObj));
+					System.out.println("hitBelow: "  + hitBelow(brickObj));
+					System.out.println("hitLeft: "  + hitLeft(brickObj));
+					System.out.println("hitRight: "  + hitRight(brickObj));
+					
+					/*
+					Graphics2D g = null;
+					g.setColor(GameMain.bgColor);
+					g.fill(new Rectangle2D.Double(brickObj.brick.getX(), brickObj.brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT));
+					*/
+					if(hitAbove(brickObj))
+						moveUp();
+					else if(hitBelow(brickObj))
+						moveDown();
+					else if(hitLeft(brickObj))
+						moveLeft();
+					else if(hitRight(brickObj))
+						moveRight();
+					
+					GameMain.Brick.remove(brickObj);
+					return true;
+				}
+			}
 		}
-		else
-		{
-			return false;
-		}
+		return false;
+		
 	}
 	
 	public void move()
 	{
 		if(ball.getX() + newX < 0)
 			newX = 1;
-		if(ball.getX() + ball.getWidth() + newX > GameMain.frameSize)
+		if(ball.getX() + ball.getWidth() + newX >= GameMain.frameSize)
 			newX = -1;
 		if(ball.getY() + newY < 0)
 			newY = 1;
-		if(ball.getY() + ball.getHeight() + newY > GameMain.frameSize)
+		if(ball.getY() + ball.getHeight() + newY >= GameMain.frameSize)
 			newY = -1;
 		
 		ball.setFrame(newX + ball.getX(), ball.getY() + newY, ball.getWidth(), ball.getHeight());
@@ -136,9 +164,25 @@ public class Ball {
 		newX = 1;
 	}
 	
-	public Ball getNewBall()
+	public boolean hitBelow(Bricks brickObj)
 	{
-		return new Ball(ball.getX() + newX, ball.getY() + newY);
+		return ball.getY() >= brickObj.getY() + brickObj.brick.getHeight() ;
 	}
+	
+	public boolean hitAbove(Bricks brickObj) 
+	{
+		return ball.getY() + ball.getHeight() <= brickObj.brick.getY();
+	}
+	
+	public boolean hitLeft(Bricks brickObj) 
+	{
+		return ball.getX() + ball.getWidth() <= brickObj.brick.getX();
+	}
+	
+	public boolean hitRight(Bricks brickObj) 
+	{
+		return ball.getX() >= brickObj.brick.getX() + brickObj.brick.getWidth();
+	}
+
 }
 

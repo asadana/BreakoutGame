@@ -34,7 +34,7 @@ public class Paddle extends JPanel
 	public static final int PADDLE_SPEED = 10;
 	
 	//
-	Rectangle2D.Double paddle;
+	public static Rectangle2D.Double paddle;
 	
 	// Constructor method initially sets the position of the paddle on the x-axis
 	public Paddle(int xPos)
@@ -67,14 +67,14 @@ public class Paddle extends JPanel
 	// getX function returns the position of the paddle on X-axis
 	public int getX()
 	{
-		return this.xPos;
+		return xPos;
 	}
 	
 	
 	// getY function returns the position of the paddle on Y-axis
 	public int getY()
 	{
-		return Paddle.yPos;
+		return yPos;
 	}
 	
 	public void move (int newX)

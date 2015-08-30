@@ -31,10 +31,10 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("serial")
 public class GameMain extends JPanel {
 	
-	ArrayList<ArrayList<Bricks>> Brick;
+	public static ArrayList<ArrayList<Bricks>> Brick;
 	private int horizontalCount;
-	private static Paddle myPaddle;
-	private static Ball ball;
+	private static Paddle paddleObj;
+	private static Ball ballObj;
 	
 	// HEIGHT and WIDTH are used to decide size for Bricks and Paddle 
 	public static final int HEIGHT = 600;
@@ -60,10 +60,10 @@ public class GameMain extends JPanel {
 	public GameMain()
 	{
 		// Initializing a new Paddle
-		myPaddle = new Paddle(400-(Paddle.P_WIDTH/2));;
+		paddleObj = new Paddle(400-(Paddle.P_WIDTH/2));;
 
 		// Initializing a new Ball
-		ball = new Ball(((myPaddle.getX() + (Paddle.P_WIDTH / 2)) - (Ball.DIAMETER / 2)), 
+		ballObj = new Ball(((paddleObj.getX() + (Paddle.P_WIDTH / 2)) - (Ball.DIAMETER / 2)), 
 				(Paddle.yPos - (Ball.DIAMETER)));
 		
 		// Initializing bricks
@@ -92,8 +92,8 @@ public class GameMain extends JPanel {
 		g.fillRect(0, 0, frameSize, frameSize);
 		
 		// Drawing the paddle, ball and bricks
-		myPaddle.draw(graphic);
-		ball.draw(graphic);
+		paddleObj.draw(graphic);
+		ballObj.draw(graphic);
 		for(ArrayList<Bricks> row : Brick)
 		{
 			for(Bricks b : row)
@@ -172,25 +172,45 @@ public class GameMain extends JPanel {
 			public void actionPerformed(ActionEvent e)
 			{
 				
-				if(ball.collisionPaddle(myPaddle))
+				if(ballObj.collisionPaddle(paddleObj))
 				{
-					ball.moveUp();
+					ballObj.moveUp();
 					
-					if((ball.getX() + ball.getWidth())/2 < (myPaddle.getX() + Paddle.P_WIDTH)/2)
+					if(Ball.ball.getX() + Ball.ball.getWidth() /2 < Paddle.paddle.getX() + Paddle.P_WIDTH /2)
 					{
-						ball.moveLeft();
+						System.out.println("Go Left");
+						ballObj.moveLeft();
 					}
 					else
 					{
-						ball.moveRight();
+						System.out.println("Go right");
+						ballObj.moveRight();
 					}
 				}
-				else if (ball.getY() > (myPaddle.getY() - Paddle.P_HEIGHT))
+				else if (ballObj.ball.getY() > (Paddle.paddle.getY() + Paddle.P_HEIGHT))
 				{
-					frame.dispose();
+					JOptionPane.showMessageDialog(null, "Ball went under the paddle\n Game Over!", "Game Over", JOptionPane.WARNING_MESSAGE);
+					System.exit(0);
 				}
 				
-				ball.move();
+				if(Brick.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "YOU WIN!", "WooHoo", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Game will now close", "You Win!", JOptionPane.PLAIN_MESSAGE);
+					System.exit(0);
+				}
+				else
+				{
+					if(ballObj.collisionBrick())
+					{
+						
+						//frame.paintComponents(null);
+					}
+					
+				}
+				
+				
+				ballObj.move();
 				frame.repaint();
 				
 				
@@ -209,7 +229,9 @@ public class GameMain extends JPanel {
 					// Notifying the user that time ran out
 					if (timeLeft == 0) {
 						JOptionPane.showMessageDialog(null, "Time is up!\n\nSorry, You Lost.", "Game Over", JOptionPane.WARNING_MESSAGE);
-                
+						JOptionPane.showMessageDialog(null, "Game will now exit", "Game Over", JOptionPane.WARNING_MESSAGE);
+						System.exit(0);
+						
 					}
 				}
 				
@@ -229,10 +251,10 @@ public class GameMain extends JPanel {
 					public void keyPressed(KeyEvent k) 
 					{
 						if(k.getKeyCode()==KeyEvent.VK_LEFT)
-							myPaddle.moveLeft();
+							paddleObj.moveLeft();
 
 						else if(k.getKeyCode()==KeyEvent.VK_RIGHT)
-							myPaddle.moveRight();
+							paddleObj.moveRight();
 						
 						frame.repaint();
 				
@@ -250,7 +272,7 @@ public class GameMain extends JPanel {
 					oldX = e.getX();
 					firstTime = false;
 				}
-				myPaddle.move(e.getX() - oldX);
+				paddleObj.move(e.getX() - oldX);
 				oldX = e.getX();
 				frame.repaint();
 			}
