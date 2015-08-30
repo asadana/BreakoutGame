@@ -18,7 +18,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class Paddle extends JPanel implements KeyListener 
+public class Paddle extends JPanel 
 {
 	
 	// Defining the characteristics of the paddle
@@ -31,12 +31,16 @@ public class Paddle extends JPanel implements KeyListener
 	public static int yPos = GameMain.HEIGHT - 30;
 	
 	// Defining the speed of the paddle
-	public static final int PADDLE_SPEED = 5;
+	public static final int PADDLE_SPEED = 10;
+	
+	//
+	Rectangle2D.Double paddle;
 	
 	// Constructor method initially sets the position of the paddle on the x-axis
 	public Paddle(int xPos)
 	{
-        this.xPos = xPos;   
+        this.xPos = xPos;
+        paddle = new Rectangle2D.Double(xPos, yPos, P_WIDTH, P_HEIGHT);
     }
 	
 	// setXPos is used to set the position of the paddle during the game
@@ -55,9 +59,9 @@ public class Paddle extends JPanel implements KeyListener
 	
 	public void draw(Graphics2D g){
         g.setColor(PADDLE_COLOR);
-        g.fill(new Rectangle2D.Double(xPos, yPos, P_WIDTH, P_HEIGHT));
+        g.fill(paddle);
         g.setColor(Color.BLUE);
-        g.draw(new Rectangle2D.Double(xPos, yPos, P_WIDTH, P_HEIGHT));
+        g.draw(paddle);
     }
 	
 	// getX function returns the position of the paddle on X-axis
@@ -72,30 +76,22 @@ public class Paddle extends JPanel implements KeyListener
 	{
 		return Paddle.yPos;
 	}
-
-	@Override
-	public void keyPressed(KeyEvent k) {
-		if(k.getKeyCode()==KeyEvent.VK_LEFT){
-			xPos = (xPos - 3);
-
-		}
-		else if(k.getKeyCode()==KeyEvent.VK_RIGHT){
-			xPos = (xPos + 3);
-		}
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+	
+	public void move (int newX)
+	{
+		if((paddle.getX() + newX >= 0) && (paddle.getX() + newX + P_WIDTH <= GameMain.frameSize))
+			paddle.setFrame(newX + paddle.getX(), paddle.getY() + 0, paddle.getWidth(), paddle.getHeight());
 		
 	}
 	
+	public void moveRight()
+	{
+		move(PADDLE_SPEED);
+	}
+	
+	public void moveLeft()
+	{
+		move(-PADDLE_SPEED);
+	}
+
 }

@@ -23,18 +23,21 @@ public class Bricks
 	
 	// Defining the position variables of the brick
 	private int xPos, yPos; 
+	
+	Rectangle2D.Double brick; 
 
 	// Constructor method to set the position of the brick
 	public Bricks(int xPos, int yPos)
 	{
 		this.xPos = xPos;
 		this.yPos = yPos;
+		brick = new Rectangle2D.Double(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT);
 	}
 	
 	// Draw method draws and fills the position of the brick
 	public void draw(Graphics2D g){
 		g.setColor(Color.white);
-		g.fill(new Rectangle2D.Double(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT));
+		g.fill(brick);
 		g.setColor(BRICK_COLOR);
 		g.fill(new Rectangle2D.Double((xPos+2), (yPos+2), BRICK_WIDTH-4, BRICK_HEIGHT-4));
 	}

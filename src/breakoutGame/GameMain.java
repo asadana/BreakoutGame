@@ -16,6 +16,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
@@ -29,12 +33,18 @@ public class GameMain extends JPanel {
 	
 	ArrayList<ArrayList<Bricks>> Brick;
 	private int horizontalCount;
-	private Paddle myPaddle;
-	private Ball ball;
+	private static Paddle myPaddle;
+	private static Ball ball;
 	
 	// HEIGHT and WIDTH are used to decide size for Bricks and Paddle 
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 720;
+	
+	// frameSize defines the size of the frame
+	public static final int frameSize = 800;
+	
+	// bgColor stores the background color of the frame
+	public static Color bgColor = Color.GRAY;
 	
 	// Number of rows of Bricks to be drawn
 	public static int numBrickRows = 2;
@@ -43,6 +53,8 @@ public class GameMain extends JPanel {
 	public static Timer timerVar;
 	// timeLeft is used to decide the maximum amount of time to be given for the game
 	public static int timeLeft = 180;
+	//
+	public static int timerCheck = 0;
 	
 	// GameMain constructor
 	public GameMain()
@@ -75,9 +87,9 @@ public class GameMain extends JPanel {
 		Graphics2D graphic = (Graphics2D) g;
 		
 		// Painting the background Gray
-		g.clearRect(0, 0, 800, 800);
-		g.setColor(Color.GRAY);
-		g.fillRect(0, 0, 800, 800);
+		g.clearRect(0, 0, frameSize, frameSize);
+		g.setColor(bgColor);
+		g.fillRect(0, 0, frameSize, frameSize);
 		
 		// Drawing the paddle, ball and bricks
 		myPaddle.draw(graphic);
@@ -101,7 +113,7 @@ public class GameMain extends JPanel {
 		// Defining the Frame
 		frame.setTitle("Welcome to the breakout game!");
 		frame.pack();
-		frame.setSize(800,800);
+		frame.setSize(frameSize,frameSize);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,25 +167,53 @@ public class GameMain extends JPanel {
 		clockFrame.setVisible(true);
 		
 		// Activating the timerVar every 1000 milliseconds
-		timerVar = new Timer(1000, new ActionListener(){
+		timerVar = new Timer(10, new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				// Decrease the time left
-				timeLeft--;
-			
-				// Converting seconds into minutes
-				long minutes = TimeUnit.SECONDS.toMinutes(timeLeft)
-                    - (TimeUnit.SECONDS.toHours(timeLeft) * 60);
-				long seconds = TimeUnit.SECONDS.toSeconds(timeLeft)
-                    - (TimeUnit.SECONDS.toMinutes(timeLeft) * 60);
-				clockLabel.setText(minutes + " : " + seconds);
-            
-				// Notifying the user that time ran out
-				if (timeLeft == 0) {
-					JOptionPane.showMessageDialog(null, "Time is up!\n\nSorry, You Lost.", "Game Over", JOptionPane.WARNING_MESSAGE);
-                
+				
+				if(ball.collisionPaddle(myPaddle))
+				{
+					ball.moveUp();
+					
+					if((ball.getX() + ball.getWidth())/2 < (myPaddle.getX() + Paddle.P_WIDTH)/2)
+					{
+						ball.moveLeft();
+					}
+					else
+					{
+						ball.moveRight();
+					}
 				}
+				else if (ball.getY() > (myPaddle.getY() - Paddle.P_HEIGHT))
+				{
+					frame.dispose();
+				}
+				
+				ball.move();
+				frame.repaint();
+				
+				
+				if(timerCheck%100 == 0)
+				{
+					// Decrease the time left
+					timeLeft--;
+			
+					// Converting seconds into minutes
+					long minutes = TimeUnit.SECONDS.toMinutes(timeLeft)
+							- (TimeUnit.SECONDS.toHours(timeLeft) * 60);
+					long seconds = TimeUnit.SECONDS.toSeconds(timeLeft)
+							- (TimeUnit.SECONDS.toMinutes(timeLeft) * 60);
+					clockLabel.setText(minutes + " : " + seconds);
+            
+					// Notifying the user that time ran out
+					if (timeLeft == 0) {
+						JOptionPane.showMessageDialog(null, "Time is up!\n\nSorry, You Lost.", "Game Over", JOptionPane.WARNING_MESSAGE);
+                
+					}
+				}
+				
+				timerCheck++;
 			}
 		});
 	
@@ -182,8 +222,41 @@ public class GameMain extends JPanel {
 	
 		clockFrame.add(clockLabel);	    
 		clockFrame.setVisible(true);
-	
+		
+		frame.addKeyListener(new KeyAdapter()
+				{
+					@Override
+					public void keyPressed(KeyEvent k) 
+					{
+						if(k.getKeyCode()==KeyEvent.VK_LEFT)
+							myPaddle.moveLeft();
 
+						else if(k.getKeyCode()==KeyEvent.VK_RIGHT)
+							myPaddle.moveRight();
+						
+						frame.repaint();
+				
+					}
+				});
+	
+		frame.addMouseMotionListener (new MouseMotionAdapter() 
+		{
+			boolean firstTime = true ;
+			int oldX ;
+			public void mouseMoved(MouseEvent e) {
+			
+				if (firstTime)
+				{
+					oldX = e.getX();
+					firstTime = false;
+				}
+				myPaddle.move(e.getX() - oldX);
+				oldX = e.getX();
+				frame.repaint();
+			}
+		}) ;
+		
+		frame.setFocusable(true);
 	}
 
 }
