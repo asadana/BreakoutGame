@@ -32,7 +32,11 @@ import java.util.concurrent.TimeUnit;
 public class GameMain extends JPanel {
 	
 	// List of Bricks
-	public static ArrayList<ArrayList<Bricks>> Brick;
+	//public static ArrayList<ArrayList<Bricks>> Brick;
+	
+	// Single Brick
+	public static Bricks brickObj;
+	
 	// Paddle and Ball objects
 	private static Paddle paddleObj;
 	private static Ball ballObj;
@@ -43,6 +47,9 @@ public class GameMain extends JPanel {
 	
 	// Horizontal count of bricks
 	public static int horizontalCount = WIDTH / Bricks.BRICK_WIDTH;
+	// Number of rows of Bricks to be drawn
+	public static int numBrickRows = 2;
+		
 	
 	// frameSize defines the size of the frame
 	public static final int frameSize = 800;
@@ -50,8 +57,6 @@ public class GameMain extends JPanel {
 	// bgColor stores the background color of the frame
 	public static Color bgColor = Color.GRAY;
 	
-	// Number of rows of Bricks to be drawn
-	public static int numBrickRows = 2;
 	
 	// timerVar is used to start and stop the timer countdown
 	public static Timer timerVar;
@@ -71,6 +76,9 @@ public class GameMain extends JPanel {
 				(Paddle.yPos - (Ball.DIAMETER)));
 		
 		// Initializing bricks
+		brickObj = new Bricks(frameSize/2-Bricks.BRICK_WIDTH, 100);
+		/*
+		 * // For rows of bricks
 		Brick = new ArrayList<ArrayList<Bricks>>();
 		for(int i = 0; i < numBrickRows; i++){
 			ArrayList<Bricks> temp = new ArrayList<Bricks>();
@@ -80,6 +88,7 @@ public class GameMain extends JPanel {
 			}
 			Brick.add(temp);
 		}
+		*/
 	}
 	
 	// Drawing all the components
@@ -97,13 +106,18 @@ public class GameMain extends JPanel {
 		// Drawing the paddle, ball and bricks
 		paddleObj.draw(graphic);
 		ballObj.draw(graphic);
-		for(ArrayList<Bricks> row : Brick)
+		brickObj.draw(graphic);
+		
+		/*
+		 * // For brick rows 
+		 * for(ArrayList<Bricks> row : Brick)
 		{
 			for(Bricks b : row)
 			{
 				b.draw(graphic);
 			}
 		}
+		*/
 	}	
 
 
@@ -202,15 +216,22 @@ public class GameMain extends JPanel {
 				}
 				
 				// If the bricks are all gone, game is won!
+				/*
 				if(Brick.size()==0)
 				{
 					JOptionPane.showMessageDialog(null, "YOU WIN!", "WooHoo", JOptionPane.PLAIN_MESSAGE);
 					JOptionPane.showMessageDialog(null, "Game will now close", "You Win!", JOptionPane.PLAIN_MESSAGE);
 					System.exit(0);
 				}
+				*/
+				
 				// Check for brick collision
-				else if(ballObj.collisionBrick())
+				if(ballObj.collisionBrick(brickObj))
 				{
+					JOptionPane.showMessageDialog(null, "YOU WON!!", "Breakout Game", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Game will now close", "You Win!", JOptionPane.PLAIN_MESSAGE);
+					System.exit(0);
+					
 					//frame.paintComponents(null);
 				}
 					

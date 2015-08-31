@@ -17,6 +17,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class Ball {
 
 	// Position variables
@@ -86,16 +88,17 @@ public class Ball {
 	/* collisionBall takes an object of the brick and compares the area covered by the
 	 * brick and compares it to the area covered by the ball and checks if they intersect.
 	 */
-	@SuppressWarnings("null")
-	public boolean collisionBrick()
+	public boolean collisionBrick(Bricks brickObj)
 	{
 		Area ballArea = new Area(ball);
-		
+
+/*
 		for(int i=0; i<GameMain.Brick.size(); i++)
 		{
 			ArrayList<Bricks> row = GameMain.Brick.get(i);
 			for(Bricks brickObj: row)
 			{
+*/
 				ballArea.intersect(new Area(new Rectangle2D.Double(brickObj.brick.getX(), brickObj.brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT)));
 		
 				if(!ballArea.isEmpty())
@@ -117,6 +120,7 @@ public class Ball {
 						moveRight();
 					
 					
+					
 					/*
 					Graphics2D g = null;
 					g.setColor(GameMain.bgColor);
@@ -126,8 +130,8 @@ public class Ball {
 					//GameMain.Brick.remove(brickObj);
 					return true;
 				}
-			}
-		}
+			//}
+		//}
 		return false;
 		
 	}

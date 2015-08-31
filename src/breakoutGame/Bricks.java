@@ -20,7 +20,6 @@ public class Bricks
 	public static final int BRICK_WIDTH = 60;
 	public static final int BRICK_HEIGHT = 20;
 	public static final Color BRICK_COLOR = Color.BLUE;
-	public static final int BRICK_GAP = 2;
 	
 	// Defining the position variables of the brick
 	private int xPos, yPos; 
