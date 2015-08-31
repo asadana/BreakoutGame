@@ -5,7 +5,7 @@
  * Created By: Harini Rangarajan and Ankit Sadana
  * Created On: 08/28/2015
  * Last Edited By: Ankit Sadana
- * Last Edited On: 08/30/2015
+ * Last Edited On: 08/31/2015
  */
 
 package breakoutGame;
@@ -16,8 +16,6 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
 
 public class Ball {
 

@@ -5,7 +5,7 @@
  * Created By: Ankit Sadana and Harini Rangarajan
  * Created On: 08/27/2015
  * Last Edited By: Ankit Sadana
- * Last Edited On: 08/30/2015
+ * Last Edited On: 08/31/2015
  */
 
 package breakoutGame;
@@ -24,7 +24,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import javax.swing.Timer;
-import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 // Main class
@@ -135,6 +134,30 @@ public class GameMain extends JPanel {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(c);
+		
+/*	
+ * To-do add buttons	
+		JButton startButton = new JButton();
+		JButton pauseButton = new JButton();
+		JButton exitButton = new JButton();
+		
+		startButton.setText("START");
+		pauseButton.setText("PAUSE");
+		exitButton.setText("EXIT");
+		
+		startButton.setBounds(200, 700, 90, 30);
+		pauseButton.setBounds(400, 700, 75, 15);
+		exitButton.setBounds(600, 700, 75, 15);
+		
+		startButton.setVisible(true);
+		pauseButton.setVisible(true);
+		exitButton.setVisible(true);
+		
+		
+		frame.add(startButton);
+		frame.add(pauseButton);
+		frame.add(exitButton);
+*/		
 
 		// Confirm on Exit
 		frame.addWindowListener(new WindowAdapter() {
@@ -185,6 +208,7 @@ public class GameMain extends JPanel {
 		
 		// Activating the timerVar every 1000 milliseconds
 		timerVar = new Timer(10, new ActionListener(){
+			@SuppressWarnings("static-access")
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -266,10 +290,11 @@ public class GameMain extends JPanel {
 				timerCheck++;
 			}
 		});
-	
+		
 		// Start the timer
 		timerVar.start();
-	
+			
+		
 		clockFrame.add(clockLabel);	    
 		clockFrame.setVisible(true);
 		
