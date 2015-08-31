@@ -5,7 +5,7 @@
  * Created By: Ankit Sadana and Harini Rangarajan
  * Created On: 08/27/2015
  * Last Edited By: Ankit Sadana
- * Last Edited On: 08/29/2015
+ * Last Edited On: 08/30/2015
  */
 
 package breakoutGame;
@@ -31,14 +31,18 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("serial")
 public class GameMain extends JPanel {
 	
+	// List of Bricks
 	public static ArrayList<ArrayList<Bricks>> Brick;
-	private int horizontalCount;
+	// Paddle and Ball objects
 	private static Paddle paddleObj;
 	private static Ball ballObj;
 	
 	// HEIGHT and WIDTH are used to decide size for Bricks and Paddle 
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 720;
+	
+	// Horizontal count of bricks
+	public static int horizontalCount = WIDTH / Bricks.BRICK_WIDTH;
 	
 	// frameSize defines the size of the frame
 	public static final int frameSize = 800;
@@ -67,11 +71,10 @@ public class GameMain extends JPanel {
 				(Paddle.yPos - (Ball.DIAMETER)));
 		
 		// Initializing bricks
-		Brick = new ArrayList<ArrayList<Bricks> >();
-		horizontalCount = WIDTH / Bricks.BRICK_WIDTH;
-		for(int i = 0; i < numBrickRows; ++i){
+		Brick = new ArrayList<ArrayList<Bricks>>();
+		for(int i = 0; i < numBrickRows; i++){
 			ArrayList<Bricks> temp = new ArrayList<Bricks>();
-			for(int j = 1; j < horizontalCount; ++j){
+			for(int j = 1; j < horizontalCount; j++){
 				Bricks tempBrickMain = new Bricks((j * Bricks.BRICK_WIDTH), ((i+1) * Bricks.BRICK_HEIGHT));
 				temp.add(tempBrickMain);
 			}
@@ -171,49 +174,52 @@ public class GameMain extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				
+				// Checking for paddle collision
 				if(ballObj.collisionPaddle(paddleObj))
 				{
+					// Ball moves up
 					ballObj.moveUp();
 					
+					// Left half of the paddle bounces the ball towards the left
 					if(Ball.ball.getX() + Ball.ball.getWidth() /2 < Paddle.paddle.getX() + Paddle.P_WIDTH /2)
 					{
 						System.out.println("Go Left");
 						ballObj.moveLeft();
 					}
+					// Right half of the paddle bounces the ball towards the right
 					else
 					{
 						System.out.println("Go right");
 						ballObj.moveRight();
 					}
 				}
+				
+				//If the ball falls bellow the paddle, game over
 				else if (ballObj.ball.getY() > (Paddle.paddle.getY() + Paddle.P_HEIGHT))
 				{
 					JOptionPane.showMessageDialog(null, "Ball went under the paddle\n Game Over!", "Game Over", JOptionPane.WARNING_MESSAGE);
 					System.exit(0);
 				}
 				
+				// If the bricks are all gone, game is won!
 				if(Brick.size()==0)
 				{
 					JOptionPane.showMessageDialog(null, "YOU WIN!", "WooHoo", JOptionPane.PLAIN_MESSAGE);
 					JOptionPane.showMessageDialog(null, "Game will now close", "You Win!", JOptionPane.PLAIN_MESSAGE);
 					System.exit(0);
 				}
-				else
+				// Check for brick collision
+				else if(ballObj.collisionBrick())
 				{
-					if(ballObj.collisionBrick())
-					{
-						
-						//frame.paintComponents(null);
-					}
-					
+					//frame.paintComponents(null);
 				}
-				
-				
+					
+				// Ball moves after checking for collisions
 				ballObj.move();
+				// Frame is repainted with new locations of all objects
 				frame.repaint();
 				
-				
+				// Every 100th iteration of 10 millisecond timer, the clock is updated
 				if(timerCheck%100 == 0)
 				{
 					// Decrease the time left
@@ -235,6 +241,7 @@ public class GameMain extends JPanel {
 					}
 				}
 				
+				// Timer iteration is updated
 				timerCheck++;
 			}
 		});
@@ -245,6 +252,7 @@ public class GameMain extends JPanel {
 		clockFrame.add(clockLabel);	    
 		clockFrame.setVisible(true);
 		
+		// used to move the paddle with the keyboard left and right
 		frame.addKeyListener(new KeyAdapter()
 				{
 					@Override
@@ -261,6 +269,7 @@ public class GameMain extends JPanel {
 					}
 				});
 	
+		// used to move the paddle with the mouse left and right
 		frame.addMouseMotionListener (new MouseMotionAdapter() 
 		{
 			boolean firstTime = true ;

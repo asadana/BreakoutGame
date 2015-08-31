@@ -5,7 +5,7 @@
  * Created By: Harini Rangarajan and Ankit Sadana
  * Created On: 08/28/2015
  * Last Edited By: Ankit Sadana
- * Last Edited On: 08/29/2015
+ * Last Edited On: 08/30/2015
  */
 
 package breakoutGame;
@@ -57,6 +57,7 @@ public class Paddle extends JPanel
         }
     }
 	
+	// Drawing the paddle
 	public void draw(Graphics2D g){
         g.setColor(PADDLE_COLOR);
         g.fill(paddle);
@@ -77,6 +78,7 @@ public class Paddle extends JPanel
 		return yPos;
 	}
 	
+	// move method updates the frame of paddle 
 	public void move (int newX)
 	{
 		if((paddle.getX() + newX >= 0) && (paddle.getX() + newX + P_WIDTH <= GameMain.frameSize))
@@ -84,11 +86,13 @@ public class Paddle extends JPanel
 		
 	}
 	
+	// Move the paddle right by iteration of PADDLE_SPEED
 	public void moveRight()
 	{
 		move(PADDLE_SPEED);
 	}
 	
+	// Move the paddle left by iteration of PADDLE_SPEED
 	public void moveLeft()
 	{
 		move(-PADDLE_SPEED);

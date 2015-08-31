@@ -5,19 +5,16 @@
  * Created By: Harini Rangarajan and Ankit Sadana
  * Created On: 08/28/2015
  * Last Edited By: Ankit Sadana
- * Last Edited On: 08/29/2015
+ * Last Edited On: 08/30/2015
  */
 
 package breakoutGame;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Panel;
-import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 
 public class Ball {
@@ -64,11 +61,13 @@ public class Ball {
 		return this.yPos;
 	}
 	
+	// getWidth returns the width of the ball shape
 	public int getWidth()
 	{
 		return (int)ball.getWidth();
 	}
 	
+	// getHeight returns the height of the ball shape
 	public int getHeight()
 	{
 		return (int)ball.getHeight();
@@ -92,9 +91,10 @@ public class Ball {
 	{
 		Area ballArea = new Area(ball);
 		
-		for(ArrayList<Bricks> tempList: GameMain.Brick)
+		for(int i=0; i<GameMain.Brick.size(); i++)
 		{
-			for(Bricks brickObj: tempList)
+			ArrayList<Bricks> row = GameMain.Brick.get(i);
+			for(Bricks brickObj: row)
 			{
 				ballArea.intersect(new Area(new Rectangle2D.Double(brickObj.brick.getX(), brickObj.brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT)));
 		
@@ -106,8 +106,7 @@ public class Ball {
 					System.out.println("hitBelow: "  + hitBelow(brickObj));
 					System.out.println("hitLeft: "  + hitLeft(brickObj));
 					System.out.println("hitRight: "  + hitRight(brickObj));
-					
-					
+				
 					if(hitAbove(brickObj))
 						moveUp();
 					else if(hitBelow(brickObj))
@@ -117,13 +116,14 @@ public class Ball {
 					else if(hitRight(brickObj))
 						moveRight();
 					
+					
 					/*
 					Graphics2D g = null;
 					g.setColor(GameMain.bgColor);
 					g.fill(new Rectangle2D.Double(brickObj.brick.getX(), brickObj.brick.getY(), Bricks.BRICK_WIDTH, Bricks.BRICK_HEIGHT));
 					*/
 					
-					GameMain.Brick.remove(brickObj);
+					//GameMain.Brick.remove(brickObj);
 					return true;
 				}
 			}
@@ -132,6 +132,7 @@ public class Ball {
 		
 	}
 	
+	// Moves the ball in the frame and keeps it from going outside the frameSize
 	public void move()
 	{
 		if(ball.getX() + newX < 0)
@@ -146,6 +147,7 @@ public class Ball {
 		ball.setFrame(newX + ball.getX(), ball.getY() + newY, ball.getWidth(), ball.getHeight());
 	}
 	
+	// Methods to move the ball in each direction by 1
 	public void moveUp()
 	{
 		newY = -1;
@@ -166,6 +168,7 @@ public class Ball {
 		newX = 1;
 	}
 	
+	// Methods to check for brick collision
 	public boolean hitBelow(Bricks brickObj)
 	{
 		return xPos >= brickObj.getY() + Bricks.BRICK_HEIGHT ;
